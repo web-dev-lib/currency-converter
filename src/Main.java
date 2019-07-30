@@ -11,9 +11,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         init();
         readUserInput();
-
-        System.out.println(USD);
-        System.out.println(EURO);
     }
 
     public static void init() throws IOException {
@@ -25,17 +22,36 @@ public class Main {
         Scanner myObj = new Scanner(System.in);
         Double amount;
         String currency;
+        Double result = 0.0;
 
         System.out.println("-----Welcome to currency exchange-----");
         System.out.println("Enter amount and currency");
         amount = myObj.nextDouble();
-        currency = myObj.nextLine();
+        currency = myObj.nextLine().trim();
 
-        System.out.println("You give as: " + amount + " of" + currency);
+        System.out.println("You give as: " + amount + " of " + currency);
 
         if (amount == null || currency == null) {
             System.out.println("You write wrong input!");
+        } else {
+            result = calcAmount(amount, currency);
         }
+
+        System.out.println("You get: " + result + " RUB");
+    }
+
+    private static Double calcAmount(Double amount, String currency) {
+        Double result = 0.0;
+
+        if (currency.equals("EURO")) {
+            result =  amount * Double.parseDouble(EURO);
+        }
+
+        if (currency.equals("USD")) {
+            result =  amount * Double.parseDouble(USD);
+        }
+
+        return result;
     }
 
     public static String getCurrentDate() {
@@ -62,8 +78,8 @@ public class Main {
     }
 
     public static String cutCurrency(String xml) {
-        USD = xml.substring(xml.indexOf("R01235") + 104, 1729);
-        EURO = xml.substring(xml.indexOf("R01239")+ 98, 1863);
+        USD = xml.substring(xml.indexOf("R01235") + 104, 1729).replace(",", ".");
+        EURO = xml.substring(xml.indexOf("R01239")+ 98, 1863).replace(",", ".");
 
         return xml;
     }
